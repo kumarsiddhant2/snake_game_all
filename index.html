@@ -26,38 +26,37 @@
             }
         }
 
-<div class="controls">
-    <button id="left" class="control-btn">←</button>
-    <div>
-        <button id="up" class="control-btn">↑</button>
-        <button id="down" class="control-btn">↓</button>
-    </div>
-    <button id="right" class="control-btn">→</button>
-</div>
-<style>
-    .controls {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        bottom: 10%;
-        width: 100%;
-    }
-    .control-btn {
-        font-size: 30px;
-        width: 60px;
-        height: 60px;
-        margin: 5px;
-        background-color: #333;
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-    }
-</style>
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            bottom: 10%;
+            width: 100%;
+        }
+
+        .control-btn {
+            font-size: 30px;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
+    <div class="controls">
+        <button id="left" class="control-btn">←</button>
+        <div>
+            <button id="up" class="control-btn">↑</button>
+            <button id="down" class="control-btn">↓</button>
+        </div>
+        <button id="right" class="control-btn">→</button>
+    </div>
     <script src="snake_all.js"></script>
 </body>
 </html>
