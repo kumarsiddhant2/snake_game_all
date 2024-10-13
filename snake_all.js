@@ -28,6 +28,10 @@ let d;
 document.addEventListener("keydown", direction);
 canvas.addEventListener("touchstart", handleTouchStart, false);
 canvas.addEventListener("touchmove", handleTouchMove, false);
+document.getElementById("left").addEventListener("click", () => { if (d !== "RIGHT") d = "LEFT"; });
+document.getElementById("up").addEventListener("click", () => { if (d !== "DOWN") d = "UP"; });
+document.getElementById("right").addEventListener("click", () => { if (d !== "LEFT") d = "RIGHT"; });
+document.getElementById("down").addEventListener("click", () => { if (d !== "UP") d = "DOWN"; });
 
 let xDown = null;
 let yDown = null;
