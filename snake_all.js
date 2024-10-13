@@ -82,6 +82,19 @@ function direction(event) {
     }
 }
 
+// Check if snake collides with itself or walls
+function collision(newHead, snake) {
+    for (let i = 0; i < snake.length; i++) {
+        if (newHead.x === snake[i].x && newHead.y === snake[i].y) {
+            return true;
+        }
+    }
+    if (newHead.x < 0 || newHead.y < 0 || newHead.x >= canvas.width || newHead.y >= canvas.height) {
+        return true;
+    }
+    return false;
+}
+
 // Generate food in a valid position
 function generateFood() {
     const maxX = Math.floor(canvas.width / box);
@@ -101,4 +114,85 @@ function generateFood() {
     return newFood;
 }
 
-// Rest of the game logic remains the same...
+function showCongratulationsMessage(maxscore) {
+    const newTab = window.open("", "Congratulations", "width=300,height=100");
+    newTab.document.write("<p style='font-size:20px;text-align:center;'>Congratulations! Your max score = " + maxscore + "</p>");
+    newTab.document.close(); // Ensure the tab is fully loaded
+}
+
+// Draw the game
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the snake
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = (i === 0) ? "green" : "white";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+    }
+
+    // Draw the food
+    ctx.fillStyle = "red";
+    ctx.fillRect(food.x, food.y, box, box);
+
+    // Move the snake
+    let snakeX = snake[0].x;
+    let snakeY = snake[0].y;
+
+    if (d === "LEFT") snakeX -= box;
+    if (d === "UP") snakeY -= box;
+    if (d === "RIGHT") snakeX += box;
+    if (d === "DOWN") snakeY += box;
+
+    // Check if snake eats food
+    if (snakeX === food.x && snakeY === food.y) {
+        score++;
+        food = generateFood();
+    } else {
+        snake.pop(); // Remove the tail
+    }
+
+    // Add new head
+    let newHead = {
+        x: snakeX,
+        y: snakeY
+    };
+
+    if (collision(newHead, snake)) {
+        clearInterval(game);
+        // If current score exceeds the maxscore, show congratulations
+        if (score > maxscore) {
+            maxscore = score;
+            showCongratulationsMessage(maxscore); // Show the message after the game ends
+        }
+    } else {
+        snake.unshift(newHead); // Add new head to the snake
+    }
+
+    // Draw the score
+    ctx.fillStyle = "black";
+    ctx.font = "20px Arial";
+    ctx.fillText("Score: " + score, box, box);
+    ctx.fillText("Max Score: " + maxscore, box, box * 2);
+}
+
+// Call draw function every 100 ms
+let game = setInterval(draw, 100);
+
+// Function to restart the game
+function restartGame() {
+    snake = [{ x: 9 * box, y: 10 * box }];
+    food = generateFood(); // Generate new food immediately
+    score = 0;
+    d = ""; // Reset direction
+    clearInterval(game);
+    game = setInterval(draw, 100);
+}
+
+// Add event listener for restarting
+document.addEventListener("keydown", function(event) {
+    if (event.keyCode === 82) { // R key
+        restartGame();
+    }
+});
