@@ -123,6 +123,9 @@ function showCongratulationsMessage(maxscore) {
 // Draw the game
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Set font size based on canvas width
+    const fontSize = canvas.width < 500 ? 15 : 20;
+    ctx.font = `${fontSize}px Arial`;
 
     // Draw the snake
     for (let i = 0; i < snake.length; i++) {
