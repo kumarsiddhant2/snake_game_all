@@ -165,10 +165,23 @@ function draw() {
         x: snakeX,
         y: snakeY
     };
+    
+let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
 
+function updateLeaderboard() {
+    leaderboard.push(maxscore);
+    leaderboard.sort((a, b) => b - a);
+    leaderboard = leaderboard.slice(0, 5); // Keep top 5 scores
+    localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+
+    // Display leaderboard
+    console.log("Leaderboard: ", leaderboard);
+}
+    
     if (collision(newHead, snake)) {
         gameOverSound.play(); // Play game over sound
         clearInterval(game);
+        updateLeaderboard();
         // If current score exceeds the maxscore, show congratulations
         if (score > maxscore) {
             maxscore = score;
