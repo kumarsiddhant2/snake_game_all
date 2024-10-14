@@ -2,6 +2,9 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+const eatSound = document.getElementById("eatSound");
+const gameOverSound = document.getElementById("gameOverSound");
+
 // Set the canvas size based on the device screen
 canvas.width = window.innerWidth > 800 ? 800 : window.innerWidth - 20; // Leave a margin for mobile
 canvas.height = window.innerHeight > 600 ? 600 : window.innerHeight - 100; // Leave space on mobile for controls
@@ -150,6 +153,7 @@ function draw() {
 
     // Check if snake eats food
     if (snakeX === food.x && snakeY === food.y) {
+        eatSound.play();
         score++;
         food = generateFood();
     } else {
@@ -163,6 +167,7 @@ function draw() {
     };
 
     if (collision(newHead, snake)) {
+        gameOverSound.play(); // Play game over sound
         clearInterval(game);
         // If current score exceeds the maxscore, show congratulations
         if (score > maxscore) {
