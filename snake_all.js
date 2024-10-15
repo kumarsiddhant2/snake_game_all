@@ -176,7 +176,7 @@ function saveScore(score) {
     // Sort the scores in descending order
     scores.sort((a, b) => b - a);
 
-    // Optionally limit the leaderboard to the top 5 or 10 scores
+    // Optionally limit the leaderboard to the top 5 scores
     scores = scores.slice(0, 5);
 
     // Save the updated leaderboard back to localStorage
