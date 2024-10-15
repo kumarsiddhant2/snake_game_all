@@ -166,26 +166,50 @@ function draw() {
         y: snakeY
     };
 
-function updateLeaderboard(score) {
+function saveScore(score) {
+    // Get the leaderboard array from localStorage (or initialize an empty one if not available)
+    let scores = JSON.parse(localStorage.getItem("leaderboard")) || [];
+    
+    // Add the current score to the leaderboard
+    scores.push(score);
+
+    // Sort the scores in descending order
+    scores.sort((a, b) => b - a);
+
+    // Optionally limit the leaderboard to the top 5 or 10 scores
+    scores = scores.slice(0, 10);
+
+    // Save the updated leaderboard back to localStorage
+    localStorage.setItem("leaderboard", JSON.stringify(scores));
+}
+
+function updateLeaderboard() {
+    // Get the leaderboard array from localStorage (or initialize an empty one if not available)
     let scores = JSON.parse(localStorage.getItem("leaderboard")) || [];
     let leaderboardList = document.getElementById("leaderboard-list");
-    leaderboardList.innerHTML = ""; // Clear previous list
+    
+    // Clear the previous leaderboard display
+    leaderboardList.innerHTML = "";
 
-    for (let i = 0; i < scores.length; i++) {
+    // Display each score in the leaderboard
+    scores.forEach((score, index) => {
         let li = document.createElement("li");
-        li.textContent = (i + 1) + ". " + scores[i];
+        li.textContent = (index + 1) + ". " + score;
         leaderboardList.appendChild(li);
-    }
+    });
 }
     
     if (collision(newHead, snake)) {
         gameOverSound.play(); // Play game over sound
         clearInterval(game);
+        // Save the score in the leaderboard when the game ends
+        saveScore(score);
         // If current score exceeds the maxscore, show congratulations
         if (score > maxscore) {
             maxscore = score;
             showCongratulationsMessage(maxscore); // Show the message after the game ends
         }
+        updateLeaderboard();
     } else {
         snake.unshift(newHead); // Add new head to the snake
     }
@@ -218,5 +242,5 @@ document.addEventListener("keydown", function(event) {
 });
 
 window.onload = function() {
-    displayLeaderboard();
+    updateLeaderboard();
 };
