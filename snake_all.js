@@ -168,7 +168,7 @@ function draw() {
 
 function saveScore(score) {
     // Get the leaderboard array from localStorage (or initialize an empty one if not available)
-    let scores = JSON.parse(localStorage.getItem("leaderboard")) || [];
+    let scores = JSON.parse(sessionStorage.getItem("leaderboard")) || [];
     
     // Add the current score to the leaderboard
     scores.push(score);
@@ -180,12 +180,12 @@ function saveScore(score) {
     scores = scores.slice(0, 5);
 
     // Save the updated leaderboard back to localStorage
-    localStorage.setItem("leaderboard", JSON.stringify(scores));
+    sessionStorage.setItem("leaderboard", JSON.stringify(scores));
 }
 
 function updateLeaderboard() {
     // Get the leaderboard array from localStorage (or initialize an empty one if not available)
-    let scores = JSON.parse(localStorage.getItem("leaderboard")) || [];
+    let scores = JSON.parse(sessionStorage.getItem("leaderboard")) || [];
     let leaderboardList = document.getElementById("leaderboard-list");
     
     // Clear the previous leaderboard display
@@ -242,5 +242,6 @@ document.addEventListener("keydown", function(event) {
 });
 
 window.onload = function() {
+    sessionStorage.clear();
     updateLeaderboard();
 };
